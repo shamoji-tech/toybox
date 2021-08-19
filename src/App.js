@@ -148,7 +148,7 @@ export default function MiniDrawer() {
               <ListItemIcon><AddBoxIcon /></ListItemIcon>
               <ListItemText primary="Counter" />
             </ListItem>
-            <ListItem button>
+            <ListItem button component={Link} to="/calc">
               <ListItemIcon><AppsIcon /></ListItemIcon>
               <ListItemText primary="Calculator" />
             </ListItem>

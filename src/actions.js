@@ -6,7 +6,7 @@ export const TYPE_CALC_MINUSBTN = "@@shamoji/calc_MinusBtn";
 export const TYPE_CALC_TIMESBTN = "@@shamoji/calc_TimesBtn";
 export const TYPE_CALC_DIVBTN = "@@shamoji/calc_DivBtn";
 export const TYPE_CALC_EQUALBTN = "@@shamoji/calc_EqualBtn";
-
+export const TYPE_CALC_DEFALT = "@@shamoji/calc_default";
 
 export const increment = () =>({
     type: TYPE_INCREMENT,
@@ -18,7 +18,7 @@ export const decrement = () =>({
 
 export const pushNumber = (number) =>({
     type: TYPE_CALC_NUMBTN,
-    number,
+    value: number,
 })
 
 export const pushPlus = () =>({
@@ -39,4 +39,8 @@ export const pushDiv = () =>({
 
 export const pushEqual = () =>({
     type: TYPE_CALC_EQUALBTN,
+})
+
+export const pushAC = () =>({
+    type: TYPE_CALC_DEFALT,
 })
