@@ -11,6 +11,15 @@ import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import { createTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 import logger from 'redux-logger'
+import { persistReducer, persistStore } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
+import storage from 'redux-persist/lib/storage'
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['timer']
+}
 
 const theme = createTheme({
   palette: {
@@ -21,21 +30,25 @@ const theme = createTheme({
 });
 const history = createBrowserHistory()
 
+const persistedReducer = persistReducer(persistConfig, rootReducers(history))
 const store = createStore(
-  rootReducers(history),
+  persistedReducer,
   applyMiddleware(
     thunk,
     routerMiddleware(history),
     logger,
   ),
 )
+const persistor = persistStore(store);
 
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
+      <PersistGate loading={null} persistor={persistor} >
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
+      </PersistGate>
     </ConnectedRouter>
   </Provider>,
   document.getElementById('root')

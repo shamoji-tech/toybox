@@ -7,6 +7,8 @@ export const TYPE_CALC_TIMESBTN = "@@shamoji/calc_TimesBtn";
 export const TYPE_CALC_DIVBTN = "@@shamoji/calc_DivBtn";
 export const TYPE_CALC_EQUALBTN = "@@shamoji/calc_EqualBtn";
 export const TYPE_CALC_DEFALT = "@@shamoji/calc_default";
+export const TYPE_TIMER_START = "@@shamoji/timer_start";
+export const TYPE_TIMER_END = "@@shamoji/timer_end";
 
 export const increment = () =>({
     type: TYPE_INCREMENT,
@@ -43,4 +45,13 @@ export const pushEqual = () =>({
 
 export const pushAC = () =>({
     type: TYPE_CALC_DEFALT,
+})
+
+export const timerStart = ()=>({
+    type: TYPE_TIMER_START,
+    time: Date.now()
+})
+
+export const timerEnd = () =>({
+    type: TYPE_TIMER_END,
 })

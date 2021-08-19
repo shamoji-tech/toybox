@@ -18,6 +18,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import AppsIcon from '@material-ui/icons/Apps';
+import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import Routes from './routes/Routes';
 import { Link } from 'react-router-dom';
 
@@ -151,6 +152,10 @@ export default function MiniDrawer() {
             <ListItem button component={Link} to="/calc">
               <ListItemIcon><AppsIcon /></ListItemIcon>
               <ListItemText primary="Calculator" />
+            </ListItem>
+            <ListItem button component={Link} to="/timer">
+              <ListItemIcon><AccessAlarmIcon /></ListItemIcon>
+              <ListItemText primary="Timer" />
             </ListItem>
         </List>
         <Divider />

@@ -1,4 +1,4 @@
-import { Button, Grid, Paper, Divider} from '@material-ui/core';
+import { Button, Grid, Paper} from '@material-ui/core';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { pushDiv, pushEqual, pushMinus, pushNumber, pushPlus, pushTimes, pushAC } from '../actions';
@@ -43,8 +43,8 @@ class Calculator extends Component {
         } = this.props
         return(
             <div>
-                <Grid container xs={4} wrap="nowrap">
-                    <Grid container justify="center">
+                <Grid container item xs={4} wrap="nowrap">
+                    <Grid container justifyContent="center">
                         <Paper style={styles.paper}>
                             <div style={styles.beforeFormula}>
                                 {displayResult ? displayFormula : ""}
@@ -55,26 +55,26 @@ class Calculator extends Component {
                         </Paper>
                     </Grid>
                 </Grid>
-                <Grid container xs={4} wrap="nowrap">
-                    <Grid container justify="center">
+                <Grid container item xs={4} wrap="nowrap">
+                    <Grid container justifyContent="center">
                         <CalcBtn display={7} onClick={() => pushNumber(7)}/>
                         <CalcBtn display={4} onClick={() => pushNumber(4)}/>
                         <CalcBtn display={1} onClick={() => pushNumber(1)}/>
                         <CalcBtn display={0} onClick={() => pushNumber(0)}/>
                     </Grid>
-                    <Grid container justify="center">
+                    <Grid container justifyContent="center">
                         <CalcBtn display={8} onClick={() => pushNumber(8)}/>
                         <CalcBtn display={5} onClick={() => pushNumber(5)}/>
                         <CalcBtn display={2} onClick={() => pushNumber(2)}/>
                         <CalcBtn display={"AC"} onClick={pushAC}/>
                     </Grid>
-                    <Grid container justify="center">
+                    <Grid container justifyContent="center">
                         <CalcBtn display={9} onClick={() => pushNumber(9)}/>
                         <CalcBtn display={6} onClick={() => pushNumber(6)}/>
                         <CalcBtn display={3} onClick={() => pushNumber(3)}/>
                         <CalcBtn display={"="} onClick={pushEqual}/>
                     </Grid>
-                    <Grid container justify="center">
+                    <Grid container justifyContent="center">
                         <CalcBtn display={"+"} onClick={pushPlus}/>
                         <CalcBtn display={"-"} onClick={pushMinus} />
                         <CalcBtn display={"*"} onClick={pushTimes}/>

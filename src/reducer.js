@@ -1,8 +1,9 @@
 // reducers.js
 import { combineReducers } from 'redux'
 import { connectRouter } from 'connected-react-router'
-import evalCalculation from './utils/eval-calculation'
+import stringMath from 'string-math';
 import * as actionTypes from './actions'
+
 const USE_OPERATOR = "@@shamoji/use_operator";
 const counter_reducer = (state = {value: 0}, action) => {
     switch(action.type){
@@ -144,7 +145,7 @@ const calculator_reducer = (state=caluclatorInitialState, action) => {
                     return {
                         ...state,
                         displayResult: true,
-                        resultValue: evalCalculation(state.internalFormula),
+                        resultValue: stringMath(state.internalFormula),
                         beforeActionType: action.type,
                     }
                 
@@ -152,7 +153,7 @@ const calculator_reducer = (state=caluclatorInitialState, action) => {
                     return {
                         ...state,
                         displayResult: true,
-                        resultValue: evalCalculation(state.internalFormula.slice( 0, -2 )),
+                        resultValue: stringMath(state.internalFormula.slice( 0, -2 )),
                         beforeActionType: action.type,
                     }
             }
@@ -210,10 +211,30 @@ const calculator_reducer = (state=caluclatorInitialState, action) => {
     }
 };
 
+const initialTimerState = {
+    startTime: 0
+};
+const timer_reducer = (state=initialTimerState, action) => {
+    switch(action.type){
+        case actionTypes.TYPE_TIMER_START:
+            
+            return {
+                ...state,
+                startTime: action.time
+            };
+        case actionTypes.TYPE_TIMER_END:
+            return initialTimerState;
+        default:
+            return state;
+    }
+};
+
+
 const createRootReducer = (history) => combineReducers({
   router: connectRouter(history),
   counter: counter_reducer,
   calculator: calculator_reducer,
+  timer: timer_reducer,
 })
 
 export default createRootReducer

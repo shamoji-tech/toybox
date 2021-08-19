@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router';
 import Home from '../components/Home';
 import Counter from '../components/Counter';
 import Calculator from '../components/Calculator';
+import Timer from '../components/Timer';
 
 class Routes extends Component {
     render() {
@@ -11,6 +12,7 @@ class Routes extends Component {
                 <Route exact path="/" component={Home} />
                 <Route path="/counter" component={Counter} />
                 <Route path="/calc" component={Calculator} />
+                <Route path="/timer" component={Timer} />
             </Switch>
         );
     }
