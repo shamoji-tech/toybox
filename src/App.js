@@ -4,7 +4,6 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
@@ -12,15 +11,9 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import ContactSupportIcon from '@material-ui/icons/ContactSupport';
-import AddBoxIcon from '@material-ui/icons/AddBox';
-import AppsIcon from '@material-ui/icons/Apps';
-import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import Routes from './Routes';
 import { Link } from 'react-router-dom';
+import Menu from './components/Menu';
 
 
 const drawerWidth = 240;
@@ -143,28 +136,8 @@ export default function MiniDrawer() {
           </IconButton>
         </div>
         <Divider />
-        <List>
-          
-            <ListItem button component={Link} to="/counter">
-              <ListItemIcon><AddBoxIcon /></ListItemIcon>
-              <ListItemText primary="Counter" />
-            </ListItem>
-            <ListItem button component={Link} to="/calc">
-              <ListItemIcon><AppsIcon /></ListItemIcon>
-              <ListItemText primary="Calculator" />
-            </ListItem>
-            <ListItem button component={Link} to="/timer">
-              <ListItemIcon><AccessAlarmIcon /></ListItemIcon>
-              <ListItemText primary="Timer" />
-            </ListItem>
-        </List>
-        <Divider />
-        <List>
-            <ListItem button>
-              <ListItemIcon><ContactSupportIcon /></ListItemIcon>
-              <ListItemText primary="Contact" />
-            </ListItem>
-        </List>
+        <Menu openState={open}/>
+        
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
