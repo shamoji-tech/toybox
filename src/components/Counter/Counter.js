@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { increment, decrement } from '../actions';
+import { increment, decrement } from './actions';
 class Counter extends Component{
     
     render() {

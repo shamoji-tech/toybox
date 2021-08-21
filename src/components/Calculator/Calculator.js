@@ -1,7 +1,7 @@
 import { Button, Grid, Paper} from '@material-ui/core';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { pushDiv, pushEqual, pushMinus, pushNumber, pushPlus, pushTimes, pushAC } from '../actions';
+import { pushDiv, pushEqual, pushMinus, pushNumber, pushPlus, pushTimes, pushAC } from './actions';
 
 function CalcBtn(props){
     const styles = {

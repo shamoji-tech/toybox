@@ -2,7 +2,7 @@ import { Button, Grid, Paper} from '@material-ui/core';
 import React, { Component } from 'react';
 import { blue, red } from '@material-ui/core/colors';
 import { connect } from 'react-redux';
-import { timerEnd, timerStart } from '../actions';
+import { timerEnd, timerStart } from './actions';
 
 
 function unixTime2String(time){

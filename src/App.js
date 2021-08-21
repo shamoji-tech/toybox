@@ -19,7 +19,7 @@ import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import AppsIcon from '@material-ui/icons/Apps';
 import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
-import Routes from './routes/Routes';
+import Routes from './Routes';
 import { Link } from 'react-router-dom';
 
 
