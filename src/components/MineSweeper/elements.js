@@ -37,9 +37,11 @@ class Cell {
         this.hint = 0;
         this.isOpen = false;
         this.neighbourCell = [];
+        this.isCellOpen = false;
     }
 
     openCell(){
+        this.isCellOpen = true;
         if(this.isMine){
             store.dispatch(
                 ()=>actionTypes.stepOnTheMine()

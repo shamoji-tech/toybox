@@ -7,9 +7,7 @@ import { unixTime2String } from '../Utils/utils';
 
 function Mine(props) {
     
-    const [isOpen, setOpenState] = useState(false);
-    
-    
+    const [isOpen, setCellOpen] = useState(false);
     const styles = {
         btn: {
             minWidth: "32px",
@@ -24,10 +22,10 @@ function Mine(props) {
                 variant="contained" 
                 color="primary" 
                 style={styles.btn} 
-                onClick={() => {setOpenState(true); props.cell.openCell();}}
+                onClick={()=>{props.cell.openCell(); setCellOpen(true);}}
                 disabled={isOpen}
                 >
-                {isOpen ? 1 : ""}
+                <Typography >{isOpen ? 1 : ""}</Typography>
             </Button>
         </Grid>
     );
@@ -84,12 +82,14 @@ class MineSweeper extends Component {
 
     timerStarter = ()=>{
         this.timerRef.current.timerStarter();
-        this.setState((prevState)=>{
-            return {
-                ...prevState,
-                startTime: Date.now(),
-            };
-        })
+        if(!this.state.startTime){
+            this.setState((prevState)=>{
+                return {
+                    ...prevState,
+                    startTime: Date.now(),
+                };
+            });
+        }
     };
 
     timerReseter = ()=>{
@@ -182,7 +182,7 @@ class MineSweeper extends Component {
                             <Grid container key={"row" + i} wrap="nowrap">
                                 {rowGroup.map((colCell, j) => {
                                     return (
-                                    <Mine key={"row" + i + "col" + j} cell={colCell}/>
+                                    <Mine key={"row" + i + "col" + j + Date.now()} cell={colCell}/>
                                 );})}
                             </Grid>
                         );})}

@@ -7,7 +7,15 @@ class TimerDisplay extends Component{
     state = {nowTime: 0, intervalID:0,};
 
     timerStarter = () => {
-        
+        if(this.state.intervalID){
+            clearInterval(this.state.intervalID);
+            this.setState((prevState)=>{
+                return {
+                    ...prevState,
+                    intervalID:0,
+                };
+            });
+        }
         const newIntervalID = setInterval(()=>{
             this.setState((prevState)=>{
                 return {
