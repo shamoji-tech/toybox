@@ -31,7 +31,7 @@ const theme = createTheme({
 const history = createBrowserHistory()
 
 const persistedReducer = persistReducer(persistConfig, rootReducers(history))
-const store = createStore(
+export const store = createStore(
   persistedReducer,
   applyMiddleware(
     thunk,

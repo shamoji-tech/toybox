@@ -1,27 +1,36 @@
 import { Box, Button, Divider, Grid, Grow, Menu, MenuItem, Typography } from '@material-ui/core';
-import React, { Component } from 'react';
+import React, { useState , Component } from 'react';
 import { connect } from 'react-redux';
 import TimerDisplay from '../TimerDisplay/TimerDisplay';
 import { pushStart, pushReset, changeDiffNoob, changeDiffNormal, changeDiffAdvanced } from './actions';
-import { unixTime2String4MineSweeper } from '../Utils/utils';
+import { unixTime2String } from '../Utils/utils';
 
-class Mine extends Component {
+function Mine(props) {
     
-    render(){
-        const styles = {
-            btn: {
-                minWidth: "32px",
-                width: "32px",
-                height: "32px",
-                borderRadius: "0px",
-            }
+    const [isOpen, setOpenState] = useState(false);
+    
+    
+    const styles = {
+        btn: {
+            minWidth: "32px",
+            width: "32px",
+            height: "32px",
+            borderRadius: "0px",
         }
-        return (
-            <Grid item>
-                <Button variant="contained" color="primary" style={styles.btn}></Button>
-            </Grid>
-        );
-    }
+    };
+    return (
+        <Grid item>
+            <Button 
+                variant="contained" 
+                color="primary" 
+                style={styles.btn} 
+                onClick={() => {setOpenState(true); props.cell.openCell();}}
+                disabled={isOpen}
+                >
+                {isOpen ? 1 : ""}
+            </Button>
+        </Grid>
+    );
 }
 
 function SelectDiffMenu(props) {
@@ -71,53 +80,34 @@ function SelectDiffMenu(props) {
 
 class MineSweeper extends Component {
 
-    state = {startTime:0, displayTime: 0, intervalID:0,}
-    timerStarter = () => {
-        if(this.state.intervalID){
-            clearInterval(this.state.intervalID)
-            this.setState((prevState)=>{
-                return {
-                    ...prevState,
-                    intervalID: 0,
-                };
-            })
-        }
+    state = {startTime: 0,};
+
+    timerStarter = ()=>{
+        this.timerRef.current.timerStarter();
         this.setState((prevState)=>{
             return {
                 ...prevState,
                 startTime: Date.now(),
             };
         })
-        const newIntervalID = setInterval(()=>{
-            this.setState((prevState)=>{
-                return {
-                    ...prevState,
-                    displayTime: Date.now() - prevState.startTime,
-                };
-            });
-        },1000);
-        this.setState((prevState)=>{
-            return {
-                    ...prevState,
-                    intervalID: newIntervalID,
-                };
-            }
-        );
     };
 
-    timerReseter = () => {
-        clearInterval(this.state.intervalID);
+    timerReseter = ()=>{
+        this.timerRef.current.timerReseter();
         this.setState((prevState)=>{
             return {
                 ...prevState,
-                displayTime: 0,
-                startTime:0,
-                intervalID:0,
-            }
-        });
-
-
+                startTime: 0,
+            };
+        })
     };
+
+    constructor(props){
+        super(props);
+        this.timerRef = React.createRef();
+        this.timerStarter = this.timerStarter.bind(this);
+        this.timerReseter = this.timerReseter.bind(this);
+    }
 
     render(){
         const { 
@@ -170,7 +160,7 @@ class MineSweeper extends Component {
                     </Grid>
                 </Grid>
                 <Grid container>
-                    <Typography style={{color: "#9c9c9c"}}>選択難易度:{mine.colNum}x{mine.rowNum} 地雷:{mine.mineNum}設定</Typography>
+                    <Typography style={{color: "#9c9c9c"}}>選択難易度:{mine.boardState.colNum}x{mine.boardState.rowNum} 地雷:{mine.boardState.numMine}設定</Typography>
                 </Grid>
                 <Divider />
                 <Grid container>
@@ -181,18 +171,18 @@ class MineSweeper extends Component {
                         <Button color="secondary" variant="contained" style={{margin: "8px"}} onClick={()=>{pushReset(); this.timerReseter();}}>RESET</Button>
                     </Grid>
                     <Grid item>
-                        <TimerDisplay isDisplay={isDisplay} displayTime={this.state.displayTime} displayFunction={unixTime2String4MineSweeper} displayDefault="00:00:00"/>
+                        <TimerDisplay ref={this.timerRef} isDisplay={isDisplay} startTime={this.state.startTime} displayFunction={unixTime2String} displayDefault="00:00:00:000."/>
                     </Grid>
                 </Grid>
                 <Divider />
                 <Grow in={isDisplay}>
                     <Box m={1}>
-                        {board.cells.map((row, i) => {
+                        {board.cells.map((rowGroup, i) => {
                             return (
                             <Grid container key={"row" + i} wrap="nowrap">
-                                {row.map((col, j) => {
+                                {rowGroup.map((colCell, j) => {
                                     return (
-                                    <Mine key={"row" + i + "col" + j}/>
+                                    <Mine key={"row" + i + "col" + j} cell={colCell}/>
                                 );})}
                             </Grid>
                         );})}
