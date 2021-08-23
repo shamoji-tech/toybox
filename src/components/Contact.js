@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 
-class MineSweeper extends Component {
+class Contact extends Component {
+
     render(){
         return (
             <div>
-                a
+                <span>Mail: menushark@gmail.com</span>
             </div>
         );
     }
 }
 
-export default MineSweeper;
+export default Contact;

@@ -4,6 +4,7 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 import AppsIcon from '@material-ui/icons/Apps';
 import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
+import Brightness7Icon from '@material-ui/icons/Brightness7';
 import { Link } from 'react-router-dom';
 
 function MenuBtn(props){
@@ -27,6 +28,7 @@ class MainMenu extends Component {
                     <MenuBtn title={"Counter"} isClose={this.props.openState} link={"/counter"} icon={<AddBoxIcon />}/>
                     <MenuBtn title={"Calculator"} isClose={this.props.openState} link={"/calc"} icon={<AppsIcon />} />
                     <MenuBtn title={"Timer"} isClose={this.props.openState} link={"/timer"} icon={<AccessAlarmIcon />} />
+                    <MenuBtn title={"MineSweeper"} isClose={this.props.openState} link={"/mine_sweeper"} icon={<Brightness7Icon />} />
                 </List>
                 <Divider />
                 <List>

@@ -1,4 +1,4 @@
-import { Button, Grid, Paper} from '@material-ui/core';
+import { Button, Grid, Grow, Paper} from '@material-ui/core';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { pushDiv, pushEqual, pushMinus, pushNumber, pushPlus, pushTimes, pushAC } from './actions';
@@ -46,7 +46,7 @@ class Calculator extends Component {
                 padding: "5px",
             },
             beforeFormula: {
-                color: "lightgray",
+                color: "#9c9c9c",
             }
         }
         const {
@@ -66,9 +66,11 @@ class Calculator extends Component {
                 <Grid container wrap="nowrap" justifyContent="center" spacing={2} style={{width: "400px",}}>
                     <Grid item >
                         <Paper style={styles.paper}>
-                            <div style={styles.beforeFormula}>
-                                {displayResult ? displayFormula : ""}
-                            </div>
+                            <Grow in={displayResult}>
+                                <div style={styles.beforeFormula}>
+                                    {displayResult ? displayFormula : ""}
+                                </div>
+                            </Grow>
                             <div>
                                 <h2>{displayResult ? resultValue: displayFormula}</h2>
                             </div>
