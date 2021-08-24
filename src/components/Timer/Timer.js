@@ -1,4 +1,4 @@
-import { Button, Grid, Paper} from '@material-ui/core';
+import { Button, Divider, Grid, Paper, Typography} from '@material-ui/core';
 import React, { Component } from 'react';
 import { blue, red } from '@material-ui/core/colors';
 import { connect } from 'react-redux';
@@ -69,7 +69,7 @@ class Timer extends Component{
             paper: {
                 width: "300px",
                 height: "75px",
-                textAlign: "right",
+                textAlign: "center",
                 margin: "5px",
                 padding: "5px",
             },
@@ -91,12 +91,19 @@ class Timer extends Component{
         
         return (
             <div>
-                <Grid container spacing={4} wrap="nowrap" justifyContent="center">
+                <Grid container wrap="nowrap" style={{margin: "8px",}}>
+                    <Typography variant="h4">Timer</Typography>
+                </Grid>
+                <Grid container wrap="nowrap" style={{margin:"8px", color:"#9c9c9c"}}>
+                    <Typography variant="body1">タイマー</Typography>
+                </Grid>
+                <Divider />
+                <Grid container wrap="nowrap" justifyContent="center">
                     <Paper style={styles.paper}>
                         <h2>{this.state.intervalID ? unixTime2String(this.state.nowTime - startTime) : "00:00:00:000."}</h2>
                     </Paper>
                 </Grid>
-                <Grid container spacing={4} justifyContent="center">
+                <Grid container wrap="nowrap" justifyContent="center">
                     <Grid item>
                         <Button 
                         style={this.state.intervalID ? styles.buttonEnd : styles.buttonStart} 

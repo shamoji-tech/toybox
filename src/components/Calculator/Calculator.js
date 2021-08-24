@@ -1,4 +1,4 @@
-import { Button, Grid, Grow, Paper} from '@material-ui/core';
+import { Button, Divider, Grid, Grow, Paper, Typography} from '@material-ui/core';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { pushDiv, pushEqual, pushMinus, pushNumber, pushPlus, pushTimes, pushAC } from './actions';
@@ -63,6 +63,16 @@ class Calculator extends Component {
         } = this.props
         return(
             <div>
+                <Grid container wrap="nowrap" style={{margin:"8px"}}>
+                    <Typography variant="h4">Calculator</Typography>
+                </Grid>
+                <Grid container wrap="nowrap" style={{margin: "8px", color: "#9c9c9c9c"}} >
+                    
+                    <Grid item>
+                        <Typography variant="body1">電卓アプリ</Typography>
+                    </Grid>
+                </Grid>
+                <Divider />
                 <Grid container wrap="nowrap" justifyContent="center" spacing={2} style={{width: "400px",}}>
                     <Grid item >
                         <Paper style={styles.paper}>

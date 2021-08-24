@@ -1,3 +1,4 @@
+import { Divider, Grid, Typography,Paper, Button } from '@material-ui/core';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { increment, decrement } from './actions';
@@ -7,15 +8,26 @@ class Counter extends Component{
         const { count, increment, decrement} = this.props;
         return (
             <div>
-                <div>
-                    count : <span>{count}</span>
-                </div>
-                <div>
-                    <button onClick={increment}>increment</button>
-                </div>
-                <div>
-                    <button onClick={decrement}>decrement</button>
-                </div>
+                <Grid container wrap="nowrap" style={{margin: "8px"}}>
+                    <Typography variant="h4">Counter</Typography>
+                </Grid>
+                <Grid container wrap="nowrap" style={{margin: "8px", color:"#9c9c9c",}} >
+                    <Typography variant="body1" >カウンター</Typography>
+                </Grid>
+                <Divider />
+                <Grid container wrap="nowrap" justifyContent="center">
+                    <Paper style={{width: "100px", height:"40px", textAlign: "center", margin:"8px", padding:"8px",}}>
+                        <Typography variant="body1">{count}</Typography>
+                    </Paper>
+                </Grid>
+                <Grid container wrap="nowrap" justifyContent="center" spacing={4}>
+                    <Grid item>
+                        <Button onClick={increment} color="primary" variant="contained">+1</Button>
+                    </Grid>
+                    <Grid item>
+                        <Button onClick={decrement} color="secondary" variant="contained">-1</Button>
+                    </Grid>
+                </Grid>
             </div>
         );
     }
