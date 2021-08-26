@@ -1,14 +1,16 @@
-import { Grid } from '@material-ui/core'
+import { Grid, Typography } from '@material-ui/core'
 import React, { Component } from 'react'
 
 class Footer extends Component{
     render() {
         return (
-            <div>
-                <Grid container style={{bottom: 0, position: "absolute", backgroundColor: "black", color:"white"}}>
-                    aaa
+            <Grid container justifyContent="center" alignItems="center" style={{height: "100px"}}>
+                <Grid item xs></Grid>
+                <Grid item xs={8} style={{textAlign: "center"}}>
+                    <Typography variant="body1">shamoji's toybox 2021</Typography>
                 </Grid>
-            </div>
+                <Grid item xs></Grid>
+            </Grid>
         );
     }
 }

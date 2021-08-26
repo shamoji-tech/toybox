@@ -14,7 +14,8 @@ import VideogameAssetIcon from '@material-ui/icons/VideogameAsset';
 import Routes from './Routes';
 import { Link } from 'react-router-dom';
 import Menu from './components/Menu';
-import { Grid, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
+import { ListItem, ListItemIcon, ListItemText} from '@material-ui/core';
+import Footer from './components/Footer/Footer';
 
 
 const drawerWidth = 240;
@@ -162,13 +163,7 @@ export default function MiniDrawer() {
         </div>
       </main>
       <footer className={classes.footer}>
-        <Grid container justifyContent="center" alignItems="center" style={{height: "100px"}}>
-            <Grid item xs></Grid>
-            <Grid item xs={8} style={{textAlign: "center"}}>
-                <Typography variant="body1">shamoji's toybox 2021</Typography>
-            </Grid>
-            <Grid item xs></Grid>
-        </Grid>
+        <Footer />
       </footer>
     </div>
   );
