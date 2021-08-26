@@ -4,6 +4,7 @@ import { BoardState } from './elements';
 export const START = "@@MineSweeper/Start";
 export const RESET = "@@MineSweeper/Reset";
 export const GAMEOVER = "@@MineSweeper/GameOver";
+export const CHANGE_DIFF_DEBUG = "@@MineSweeper/change_diff/debug";
 export const CHANGE_DIFF_NOOB = "@@MineSweeper/change_diff/noob";
 export const CHANGE_DIFF_NORMAL = "@@MineSweeper/change_diff/normal";
 export const CHANGE_DIFF_ADV = "@@MineSweeper/change_diff/advanced";
@@ -45,6 +46,12 @@ export const timeStopCloser = () => ({
 export const closeModal = () => ({
     type: CLOSE_MODAL,
 })
+
+export const changeDiffDebug = () => ({
+    type: CHANGE_DIFF_DEBUG,
+    boardState: new BoardState(2, 2, 0),
+    diffTypes: diffTypes.debug,
+});
 
 export const changeDiffNoob = () => ({
     type: CHANGE_DIFF_NOOB,

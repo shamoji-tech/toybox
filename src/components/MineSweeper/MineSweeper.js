@@ -2,7 +2,7 @@ import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, D
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import TimerDisplay from '../TimerDisplay/TimerDisplay';
-import { pushStart, pushReset, changeDiffNoob, changeDiffNormal, changeDiffAdvanced, cellOpen, cellFlag, stepOnTheMine, closeModal, timeStopCloser } from './actions';
+import { pushStart, pushReset, changeDiffNoob, changeDiffNormal, changeDiffAdvanced, cellOpen, cellFlag, stepOnTheMine, closeModal, timeStopCloser, changeDiffDebug } from './actions';
 import { unixTime2String } from '../Utils/utils';
 import useLongPress from '../Utils/LongPress';
 import FlagIcon from '@material-ui/icons/Flag';
@@ -186,6 +186,11 @@ class MineSweeper extends Component {
             isDisplay,
             isGameOver,
             isGameOverModalOpen,
+            isWin,
+            isWinModalOpen,
+            goalCount,
+            goal,
+            pushChangeDiffDebug,
             pushChangeDiffNoob,
             pushChangeDiffNormal,
             pushChangeDiffAdvanced, 
@@ -215,6 +220,11 @@ class MineSweeper extends Component {
                             name={"select-diff"} 
                             text={"難易度を選択"}
                             menuList={[
+                                {
+                                    name: "DEBUG",
+                                    detail: "2x2",
+                                    func: pushChangeDiffDebug,
+                                },
                                 {
                                     name: "初心者",
                                     detail: "9x9",
@@ -249,10 +259,13 @@ class MineSweeper extends Component {
                     <Grid item>
                         <TimerDisplay ref={this.timerRef} isDisplay={isDisplay} startTime={this.state.startTime} displayFunction={unixTime2String} displayDefault="00:00:00:000."/>
                     </Grid>
+                    <Grid item>
+                        <Typography variant="body1" >goal:{goal}, goalCount: {goalCount}</Typography>
+                    </Grid>
                 </Grid>
                 <Divider />
                 <Grow in={isDisplay}>
-                    <Box m={1} style={isGameOver ? {pointerEvents:"none"} : {}}>
+                    <Box m={1} style={isGameOver || isWin ? {pointerEvents:"none"} : {}}>
                         {board.cells.map((rowGroup, i) => {
                             return (
                             <Grid container key={"row" + i} wrap="nowrap">
@@ -278,6 +291,20 @@ class MineSweeper extends Component {
                         <Button onClick={closeModal} color="primary">確認する</Button>
                     </DialogActions>
                 </Dialog>
+                <Dialog 
+                    open={isWinModalOpen}
+                    onClose={closeModal}
+                    aria-labelledby="win-title"
+                    aria-describedby="win-description"
+                >
+                    <DialogTitle id="win-title">地雷除去成功！</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="win-discription">やったね！</DialogContentText>
+                    </DialogContent>
+                    <DialogActions >
+                        <Button onClick={closeModal} color="primary">確認する</Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         );
     }
@@ -291,10 +318,15 @@ export default connect(
         isGameOver: state.mine.isGameOver,
         isTimeStop: state.mine.isTimeStop,
         isGameOverModalOpen: state.mine.isGameOverModalOpen,
+        isWin: state.mine.isWin,
+        isWinModalOpen: state.mine.isWinModalOpen,
+        goalCount : state.mine.goalCount,
+        goal: state.mine.goal,
     }),
     (dispatch) => {
         return (
             {
+                pushChangeDiffDebug: () => dispatch(changeDiffDebug()),
                 pushChangeDiffNoob: ()=> dispatch(changeDiffNoob()),
                 pushChangeDiffNormal: ()=> dispatch(changeDiffNormal()),
                 pushChangeDiffAdvanced: ()=> dispatch(changeDiffAdvanced()),

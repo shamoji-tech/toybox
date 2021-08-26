@@ -5,6 +5,7 @@ export class BoardState {
         this.rowNum = rowNum;
         this.colNum = colNum;
         this.numMine = numMine;
+        this.goal = rowNum * colNum - numMine;
     }
 }
 
@@ -27,10 +28,13 @@ export class Board {
         this.setNeighborCell();
         
         let nowNumMine = 0;
-        while(nowNumMine <= this.boardState.numMine){
+        while(nowNumMine < this.boardState.numMine){
+            
             const selectedRow = Math.floor( Math.random() * this.boardState.rowNum );
             const selectedCol = Math.floor( Math.random() * this.boardState.colNum );
-
+            if(this.cells[selectedRow][selectedCol].isMine){
+                continue;
+            }
             this.cells[selectedRow][selectedCol].isMine = true;
             this.cells[selectedRow][selectedCol].neighbourCell.forEach((cellMap,index) => {
                 this.cells[cellMap.y][cellMap.x].hint++;
@@ -49,42 +53,60 @@ export class Board {
 
         this.cells[0][0].neighbourCell.push({y:0,x:1});
         this.cells[0][0].neighbourCell.push({y:1,x:0});
+        this.cells[0][0].neighbourCell.push({y:1,x:1});
 
         //上辺
         for(var i=1; i<colNum-1; i++){
             this.cells[0][i].neighbourCell.push({y:0,x: i-1});
+            this.cells[0][i].neighbourCell.push({y:1,x: i-1});
             this.cells[0][i].neighbourCell.push({y:1,x: i});
+            this.cells[0][i].neighbourCell.push({y:1,x: i+1});
             this.cells[0][i].neighbourCell.push({y:0,x: i+1});
         }
 
         //右上
         this.cells[0][colNum-1].neighbourCell.push({y:0,x:colNum-2});
         this.cells[0][colNum-1].neighbourCell.push({y:1,x:colNum-1});
+        this.cells[0][colNum-1].neighbourCell.push({y:1,x:colNum-2});
+
         
         for(var i1=1; i1<rowNum-1; i1++){
             //左辺
             this.cells[i1][0].neighbourCell.push({y:i1-1,x:0});
+            this.cells[i1][0].neighbourCell.push({y:i1-1,x:1});
             this.cells[i1][0].neighbourCell.push({y:i1  ,x:1});
+            this.cells[i1][0].neighbourCell.push({y:i1+1,x:1});
             this.cells[i1][0].neighbourCell.push({y:i1+1,x:0});
 
             for(var i2=1; i2<colNum -1; i2++){
+                this.cells[i1][i2].neighbourCell.push({y:i1-1,x:i2-1});
                 this.cells[i1][i2].neighbourCell.push({y:i1-1,x:i2  });
+                this.cells[i1][i2].neighbourCell.push({y:i1-1,x:i2+1});
                 this.cells[i1][i2].neighbourCell.push({y:i1  ,x:i2-1});
                 this.cells[i1][i2].neighbourCell.push({y:i1  ,x:i2+1});
+                this.cells[i1][i2].neighbourCell.push({y:i1+1,x:i2-1});
                 this.cells[i1][i2].neighbourCell.push({y:i1+1,x:i2  });
+                this.cells[i1][i2].neighbourCell.push({y:i1+1,x:i2+1});
             }
+
             //右辺
             this.cells[i1][colNum-1].neighbourCell.push({y:i1-1,x:colNum-1});
+            this.cells[i1][colNum-1].neighbourCell.push({y:i1-1,x:colNum-2});
             this.cells[i1][colNum-1].neighbourCell.push({y:i1  ,x:colNum-2});
+            this.cells[i1][colNum-1].neighbourCell.push({y:i1+1,x:colNum-2});
             this.cells[i1][colNum-1].neighbourCell.push({y:i1+1,x:colNum-1});
+
         }
 
         //左下
         this.cells[rowNum-1][0].neighbourCell.push({y:rowNum-2,x:0});
+        this.cells[rowNum-1][0].neighbourCell.push({y:rowNum-2,x:1});
         this.cells[rowNum-1][0].neighbourCell.push({y:rowNum-1,x:1});
         
         //下辺
         for(var j=1; j<colNum-1; j++){
+            this.cells[rowNum-1][j].neighbourCell.push({y:rowNum-2, x:j-1});
+            this.cells[rowNum-1][j].neighbourCell.push({y:rowNum-2, x:j+1});
             this.cells[rowNum-1][j].neighbourCell.push({y:rowNum-2, x:j  });
             this.cells[rowNum-1][j].neighbourCell.push({y:rowNum-1, x:j-1});
             this.cells[rowNum-1][j].neighbourCell.push({y:rowNum-1, x:j+1});
@@ -92,6 +114,7 @@ export class Board {
 
         //右下
         this.cells[rowNum-1][colNum-1].neighbourCell.push({y:rowNum-2,x:colNum-1});
+        this.cells[rowNum-1][colNum-1].neighbourCell.push({y:rowNum-2,x:colNum-2});
         this.cells[rowNum-1][colNum-1].neighbourCell.push({y:rowNum-1,x:colNum-2});
 
     }

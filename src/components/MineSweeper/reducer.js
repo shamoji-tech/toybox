@@ -9,7 +9,11 @@ const initMineSweeperState = {
     isDisplay: false,
     isGameOver: false,
     isGameOverModalOpen: false,
+    isWin: false,
+    isWinModalOpen: false,
     isTimeStop: false,
+    goalCount: 0,
+    goal:999,
 };
 
 const mineSweeperReducer = (state=initMineSweeperState, action) => {
@@ -26,6 +30,7 @@ const mineSweeperReducer = (state=initMineSweeperState, action) => {
             return {
                 ...state,
                 isGameOverModalOpen: false,
+                isWinModalOpen : false,
             };
         case actionTypes.FLAG:
             if(action.status === actionTypes.SET_FLAG){
@@ -38,9 +43,21 @@ const mineSweeperReducer = (state=initMineSweeperState, action) => {
             return state;
         case actionTypes.OPEN:
             action.cell.openCell();
+            if(state.goalCount+1 === state.goal){
+                return {
+                    ...state,
+                    isWin: true,
+                    isWinModalOpen: true,
+                    isTimeStop: true,
+                    goalCount: state.goalCount+1,
+                }
+            }
             return {
                 ...state,
+                goalCount: state.goalCount+1,
             }
+        
+        case actionTypes.CHANGE_DIFF_DEBUG:
         case actionTypes.CHANGE_DIFF_NOOB:
         case actionTypes.CHANGE_DIFF_NORMAL:
         case actionTypes.CHANGE_DIFF_ADV:
@@ -50,6 +67,7 @@ const mineSweeperReducer = (state=initMineSweeperState, action) => {
                 diffType: action.diffType,
                 isDisplay: false,
                 isGameOver: false,
+                isWin: false,
             };
         case actionTypes.START:
             
@@ -57,12 +75,17 @@ const mineSweeperReducer = (state=initMineSweeperState, action) => {
                 ...state,
                 board: action.board,
                 isDisplay: true,
+                goalCount: 0,
+                goal: state.boardState.goal
             };
         case actionTypes.RESET:
             return {
                 ...state,
                 isDisplay: false,
                 isGameOver: false,
+                isWin: false,
+                goalCount: 0,
+                goal: 999,
             };
         case actionTypes.TIME_STOP_CLOSER:
             return {
