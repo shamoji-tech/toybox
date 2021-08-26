@@ -71,6 +71,22 @@ const mineSweeperReducer = (state=initMineSweeperState, action) => {
                 board: board,
                 goalCount: state.goalCount+1,
             }
+        case actionTypes.OPEN_WITH_FLAG:
+            let flagNum = 0;
+            action.cell.neighbourCell.forEach((cellMap, index)=>{
+                const cell = state.board.cells[cellMap.y][cellMap.x];
+                if(cell.isFlag){flagNum ++;}
+            });
+            if(flagNum === action.cell.hint){
+                action.cell.neighbourCell.forEach((cellMap, index)=>{
+                    const cell = state.board.cells[cellMap.y][cellMap.x];
+                    console.log(cell)
+                    if(!cell.isCellOpen && !cell.isFlag){
+                        state = mineSweeperReducer(state, {type: actionTypes.OPEN, cell: cell,})
+                    }
+                });
+            }
+            return state;
         
         case actionTypes.CHANGE_DIFF_DEBUG:
         case actionTypes.CHANGE_DIFF_NOOB:

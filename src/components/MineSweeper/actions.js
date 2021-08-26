@@ -14,12 +14,18 @@ export const FLAG = "@@MineSweeper/Flag";
 export const SET_FLAG = "@@MineSweeper/Flag/SetFlag";
 export const REMOVE_FLAG = "@@MineSweeper/Flag/RemoveFlag";
 export const TIME_STOP_CLOSER = "@@MineSweeper/TimeStopCloser";
+export const OPEN_WITH_FLAG = "@@MineSweeper/OpenWithFlag";
+
+export const openWithFlag = (cell) => ({
+    type: OPEN_WITH_FLAG,
+    cell,
+});
 
 export const cellFlag = (cell, status) => ({
     type: FLAG,
     cell,
     status
-})
+});
 
 export const cellOpen = (cell) => ({
     type: OPEN,

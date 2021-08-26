@@ -2,7 +2,7 @@ import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, D
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import TimerDisplay from '../TimerDisplay/TimerDisplay';
-import { pushStart, pushReset, changeDiffNoob, changeDiffNormal, changeDiffAdvanced, cellOpen, cellFlag, stepOnTheMine, closeModal, timeStopCloser, changeDiffDebug } from './actions';
+import { pushStart, pushReset, changeDiffNoob, changeDiffNormal, changeDiffAdvanced, cellOpen, cellFlag, stepOnTheMine, closeModal, timeStopCloser, changeDiffDebug, openWithFlag } from './actions';
 import { unixTime2String } from '../Utils/utils';
 import useLongPress from '../Utils/LongPress';
 import FlagIcon from '@material-ui/icons/Flag';
@@ -50,11 +50,14 @@ function Mine(props) {
     };
     const defaultOptions = {
         shouldPreventDefault: true,
-        delay: 500,
+        delay: 300,
       };
 
     const onClick = () => {
         if(props.cell.isFlag){return;}
+        else if(props.cell.isCellOpen){
+            props.openWithFlagDispatcher(props.cell);
+        }
         else if(props.cell.isMine){
             props.openDispatcher(props.cell);
             props.gameoverDispatcher();
@@ -68,6 +71,8 @@ function Mine(props) {
     const onLongPress = () => {
         if(props.cell.isFlag){
             props.flagDispatcher(props.cell, REMOVE_FLAG);
+        }else if(props.cell.isCellOpen){
+            
         }else{
             props.flagDispatcher(props.cell, SET_FLAG);
         }
@@ -77,10 +82,9 @@ function Mine(props) {
     return (
         <Grid item>
             <Button 
-                variant="contained" 
+                variant={props.cell.isCellOpen? "outlined" : "contained"}
                 color="primary"
                 style={styles.btn} 
-                disabled={props.cell.isCellOpen}
                 component={props.cell.isFlag? Paper: "button"}
                 {...longPressEvent}
                 >
@@ -200,6 +204,7 @@ class MineSweeper extends Component {
             cellFlag,
             stepOnTheMine,
             closeModal,
+            openWithFlag,
         } = this.props
         return (
             <div>
@@ -271,7 +276,7 @@ class MineSweeper extends Component {
                             <Grid container key={"row" + i} wrap="nowrap">
                                 {rowGroup.map((colCell, j) => {
                                     return (
-                                    <Mine key={"row" + i + "col" + j + Date.now()} cell={colCell} openDispatcher={cellOpen} flagDispatcher={cellFlag} gameoverDispatcher={stepOnTheMine} />
+                                    <Mine key={"row" + i + "col" + j + Date.now()} cell={colCell} openDispatcher={cellOpen} flagDispatcher={cellFlag} gameoverDispatcher={stepOnTheMine} openWithFlagDispatcher={openWithFlag}/>
                                 );})}
                             </Grid>
                         );})}
@@ -337,6 +342,7 @@ export default connect(
                 stepOnTheMine: ()=> dispatch(stepOnTheMine()),
                 closeModal: ()=> dispatch(closeModal()),
                 timeStopCloser: () => dispatch(timeStopCloser()),
+                openWithFlag: (cell) => dispatch(openWithFlag(cell)),
             }
         );
     }
