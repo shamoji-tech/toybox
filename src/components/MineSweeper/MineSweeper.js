@@ -1,13 +1,45 @@
-import { Box, Button, Divider, Grid, Grow, Menu, MenuItem, Typography } from '@material-ui/core';
-import React, { useState , Component } from 'react';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Grow, Menu, MenuItem, Paper, Typography } from '@material-ui/core';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import TimerDisplay from '../TimerDisplay/TimerDisplay';
-import { pushStart, pushReset, changeDiffNoob, changeDiffNormal, changeDiffAdvanced } from './actions';
+import { pushStart, pushReset, changeDiffNoob, changeDiffNormal, changeDiffAdvanced, cellOpen, cellFlag, stepOnTheMine, closeModal } from './actions';
 import { unixTime2String } from '../Utils/utils';
+import useLongPress from '../Utils/LongPress';
+import FlagIcon from '@material-ui/icons/Flag';
+import { Board } from './elements';
+import { SET_FLAG, REMOVE_FLAG} from './actions';
+import Brightness7Icon from '@material-ui/icons/Brightness7';
+
+function ButtonIcon(props) {
+    if(props.cell.isFlag){
+        return (
+            <>
+                <FlagIcon />
+            </>
+        );
+    }else if(props.cell.isCellOpen){
+        if(props.cell.isMine){
+            return (
+                <Brightness7Icon />
+            );
+        }else{
+            return (
+                <Typography>
+                    {props.cell.hint? props.cell.hint: "0"}
+                </Typography>
+            );
+        }
+    }else{
+        return (
+            <Typography>
+                {""}
+            </Typography>
+        );
+    }
+}
 
 function Mine(props) {
     
-    const [isOpen, setCellOpen] = useState(false);
     const styles = {
         btn: {
             minWidth: "32px",
@@ -16,16 +48,43 @@ function Mine(props) {
             borderRadius: "0px",
         }
     };
+    const defaultOptions = {
+        shouldPreventDefault: true,
+        delay: 500,
+      };
+
+    const onClick = () => {
+        if(props.cell.isFlag){return;}
+        else if(props.cell.isMine){
+            props.openDispatcher(props.cell);
+            props.gameoverDispatcher();
+        }
+        else
+        {
+            props.openDispatcher(props.cell);
+        }
+    }
+
+    const onLongPress = () => {
+        if(props.cell.isFlag){
+            props.flagDispatcher(props.cell, REMOVE_FLAG);
+        }else{
+            props.flagDispatcher(props.cell, SET_FLAG);
+        }
+    }
+    const longPressEvent = useLongPress(onLongPress, onClick, defaultOptions);
+      
     return (
         <Grid item>
             <Button 
                 variant="contained" 
-                color="primary" 
+                color="primary"
                 style={styles.btn} 
-                onClick={()=>{props.cell.openCell(); setCellOpen(true);}}
-                disabled={isOpen}
+                disabled={props.cell.isCellOpen}
+                component={props.cell.isFlag? Paper: "button"}
+                {...longPressEvent}
                 >
-                <Typography >{isOpen ? 1 : ""}</Typography>
+                <ButtonIcon cell={props.cell}/>
             </Button>
         </Grid>
     );
@@ -114,11 +173,17 @@ class MineSweeper extends Component {
             mine, 
             board,
             isDisplay,
+            isGameOver,
+            isGameOverModalOpen,
             pushChangeDiffNoob,
             pushChangeDiffNormal,
             pushChangeDiffAdvanced, 
             pushStart, 
             pushReset, 
+            cellOpen,
+            cellFlag,
+            stepOnTheMine,
+            closeModal,
         } = this.props
         return (
             <div>
@@ -165,7 +230,7 @@ class MineSweeper extends Component {
                 <Divider />
                 <Grid container>
                     <Grid item>
-                        <Button color="primary" variant="contained" style={{margin: "8px"}} onClick={()=>{pushStart(); this.timerStarter();}}>START</Button>
+                        <Button color="primary" variant="contained" style={{margin: "8px"}} onClick={()=>{pushStart(mine); this.timerStarter();}}>START</Button>
                     </Grid>
                     <Grid item>
                         <Button color="secondary" variant="contained" style={{margin: "8px"}} onClick={()=>{pushReset(); this.timerReseter();}}>RESET</Button>
@@ -176,18 +241,32 @@ class MineSweeper extends Component {
                 </Grid>
                 <Divider />
                 <Grow in={isDisplay}>
-                    <Box m={1}>
+                    <Box m={1} style={isGameOver ? {pointerEvents:"none"} : {}}>
                         {board.cells.map((rowGroup, i) => {
                             return (
                             <Grid container key={"row" + i} wrap="nowrap">
                                 {rowGroup.map((colCell, j) => {
                                     return (
-                                    <Mine key={"row" + i + "col" + j + Date.now()} cell={colCell}/>
+                                    <Mine key={"row" + i + "col" + j + Date.now()} cell={colCell} openDispatcher={cellOpen} flagDispatcher={cellFlag} gameoverDispatcher={stepOnTheMine} />
                                 );})}
                             </Grid>
                         );})}
                     </Box>
                 </Grow>
+                <Dialog 
+                    open={isGameOverModalOpen}
+                    onClose={closeModal}
+                    aria-labelledby="title"
+                    aria-describedby="description"
+                >
+                    <DialogTitle id="title">地雷を踏んでしまった！</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="discription">あなたは地雷を踏んでしまいました！</DialogContentText>
+                    </DialogContent>
+                    <DialogActions >
+                        <Button onClick={closeModal} color="primary">確認する</Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         );
     }
@@ -198,13 +277,23 @@ export default connect(
         mine: state.mine,
         board: state.mine.board,
         isDisplay: state.mine.isDisplay,
+        isGameOver: state.mine.isGameOver,
+        isGameOverModalOpen: state.mine.isGameOverModalOpen,
     }),
-    (dispatch) => ({
-        pushChangeDiffNoob: ()=> dispatch(changeDiffNoob()),
-        pushChangeDiffNormal: ()=> dispatch(changeDiffNormal()),
-        pushChangeDiffAdvanced: ()=> dispatch(changeDiffAdvanced()),
-        pushStart: () => dispatch(pushStart()),
-        pushReset: () => dispatch(pushReset()),
-    })
+    (dispatch) => {
+        return (
+            {
+                pushChangeDiffNoob: ()=> dispatch(changeDiffNoob()),
+                pushChangeDiffNormal: ()=> dispatch(changeDiffNormal()),
+                pushChangeDiffAdvanced: ()=> dispatch(changeDiffAdvanced()),
+                pushStart: (mine) => dispatch(pushStart(new Board(mine.boardState))),
+                pushReset: () => dispatch(pushReset()),
+                cellOpen: (cell) => dispatch(cellOpen(cell)),
+                cellFlag: (cell, status) => dispatch(cellFlag(cell, status)),
+                stepOnTheMine: ()=> dispatch(stepOnTheMine()),
+                closeModal: ()=> dispatch(closeModal()),
+            }
+        );
+    }
 )
 (MineSweeper);

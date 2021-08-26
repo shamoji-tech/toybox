@@ -7,10 +7,27 @@ export const GAMEOVER = "@@MineSweeper/GameOver";
 export const CHANGE_DIFF_NOOB = "@@MineSweeper/change_diff/noob";
 export const CHANGE_DIFF_NORMAL = "@@MineSweeper/change_diff/normal";
 export const CHANGE_DIFF_ADV = "@@MineSweeper/change_diff/advanced";
+export const OPEN = "@@MineSweeper/Open";
+export const CLOSE_MODAL = "@@MineSweeper/CloseModal";
+export const FLAG = "@@MineSweeper/Flag";
+export const SET_FLAG = "@@MineSweeper/Flag/SetFlag";
+export const REMOVE_FLAG = "@@MineSweeper/Flag/RemoveFlag";
 
 
-export const pushStart = () => ({
+export const cellFlag = (cell, status) => ({
+    type: FLAG,
+    cell,
+    status
+})
+
+export const cellOpen = (cell) => ({
+    type: OPEN,
+    cell,
+});
+
+export const pushStart = (board) => ({
     type: START,
+    board,
 });
 
 export const pushReset = () => ({
@@ -20,6 +37,10 @@ export const pushReset = () => ({
 export const stepOnTheMine = () => ({
     type: GAMEOVER,
 });
+
+export const closeModal = () => ({
+    type: CLOSE_MODAL,
+})
 
 export const changeDiffNoob = () => ({
     type: CHANGE_DIFF_NOOB,

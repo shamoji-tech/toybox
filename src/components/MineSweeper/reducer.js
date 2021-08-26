@@ -7,10 +7,38 @@ const initMineSweeperState = {
     diffType: diffTypes.noob,
     board : new Board(new BoardState(9, 9, 10)),
     isDisplay: false,
+    isGameOver: false,
+    isGameOverModalOpen: false,
 };
 
 const mineSweeperReducer = (state=initMineSweeperState, action) => {
+    
     switch(action.type){
+        case actionTypes.GAMEOVER:
+            return {
+                ...state,
+                isGameOver: true,
+                isGameOverModalOpen: true,
+            };
+        case actionTypes.CLOSE_MODAL:
+            return {
+                ...state,
+                isGameOverModalOpen: false,
+            };
+        case actionTypes.FLAG:
+            if(action.status === actionTypes.SET_FLAG){
+                action.cell.isFlag = true;
+                return state;
+            }else if(action.status === actionTypes.REMOVE_FLAG){
+                action.cell.isFlag = false;
+                return state;
+            }
+            return state;
+        case actionTypes.OPEN:
+            action.cell.openCell();
+            return {
+                ...state,
+            }
         case actionTypes.CHANGE_DIFF_NOOB:
         case actionTypes.CHANGE_DIFF_NORMAL:
         case actionTypes.CHANGE_DIFF_ADV:
@@ -19,19 +47,20 @@ const mineSweeperReducer = (state=initMineSweeperState, action) => {
                 boardState: action.boardState,
                 diffType: action.diffType,
                 isDisplay: false,
+                isGameOver: false,
             };
         case actionTypes.START:
             
             return {
                 ...state,
-                board: new Board(state.boardState),
+                board: action.board,
                 isDisplay: true,
             };
         case actionTypes.RESET:
             return {
                 ...state,
-                board: new Board(state.boardState),
                 isDisplay: false,
+                isGameOver: false,
             };
         default:
             return state;
