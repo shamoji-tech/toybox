@@ -42,8 +42,12 @@ const mineSweeperReducer = (state=initMineSweeperState, action) => {
             }
             return state;
         case actionTypes.OPEN:
-            action.cell.openCell();
+            const x = action.cell.x;
+            const y = action.cell.y;
+            const board = state.board
+            board.cells[y][x].isCellOpen = true;
             if(state.goalCount+1 === state.goal){
+                
                 return {
                     ...state,
                     isWin: true,
@@ -51,9 +55,20 @@ const mineSweeperReducer = (state=initMineSweeperState, action) => {
                     isTimeStop: true,
                     goalCount: state.goalCount+1,
                 }
+
+            }else if(action.cell.hint === 0 && !action.cell.isMine){
+                action.cell.neighbourCell.forEach((cellMap, index)=>{
+                    const cell = state.board.cells[cellMap.y][cellMap.x];
+                    if(cell.isCellOpen){
+                        return state;
+                    }
+                    state = mineSweeperReducer(state, {type: actionTypes.OPEN, cell: cell})
+                });
             }
+            
             return {
                 ...state,
+                board: board,
                 goalCount: state.goalCount+1,
             }
         

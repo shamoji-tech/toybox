@@ -25,7 +25,7 @@ function ButtonIcon(props) {
         }else{
             return (
                 <Typography>
-                    {props.cell.hint? props.cell.hint: "0"}
+                    {props.cell.hint? props.cell.hint: ""}
                 </Typography>
             );
         }

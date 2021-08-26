@@ -131,7 +131,4 @@ class Cell {
         this.isCellOpen = false;
     }
 
-    openCell(){
-        this.isCellOpen = true;
-    }
 }
