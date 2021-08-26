@@ -42,14 +42,15 @@ export const store = createStore(
 const persistor = persistStore(store);
 
 ReactDOM.render(
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <PersistGate loading={null} persistor={persistor} >
-        <ThemeProvider theme={theme}>
-          <App />
-        </ThemeProvider>
-      </PersistGate>
-    </ConnectedRouter>
-  </Provider>,
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        <PersistGate loading={null} persistor={persistor} >
+          <ThemeProvider theme={theme}>
+            <App />
+          </ThemeProvider>
+        </PersistGate>
+      </ConnectedRouter>
+    </Provider>
+  ,
   document.getElementById('root')
 );

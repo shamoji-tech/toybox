@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router';
-import Home from './components/Home';
+import Home from './components/Home/Home';
 import Counter from './components/Counter/Counter';
 import Calculator from './components/Calculator/Calculator';
 import Timer from './components/Timer/Timer';
 import MineSweeper from './components/MineSweeper/MineSweeper';
-import Contact from './components/Contact';
+import Contact from './components/Contact/Contact';
 
 
 class Routes extends Component {

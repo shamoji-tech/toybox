@@ -5,15 +5,16 @@ import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import VideogameAssetIcon from '@material-ui/icons/VideogameAsset';
 import Routes from './Routes';
 import { Link } from 'react-router-dom';
 import Menu from './components/Menu';
+import { Grid, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
 
 
 const drawerWidth = 240;
@@ -21,6 +22,10 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    position: "relative",
+    paddingBottom: "120px",
+    minHeight: "100vh",
+    boxSizing: "border-box",
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -78,6 +83,14 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
+  footer: {
+      zIndex: theme.zIndex.drawer + 2,
+      width: "100%",
+      bottom: 0,
+      position: "absolute",
+      backgroundColor: "#303030",
+      color: "white",
+  },
 }));
 
 export default function MiniDrawer() {
@@ -114,7 +127,10 @@ export default function MiniDrawer() {
           >
             <MenuIcon />
           </IconButton>
-          <Button color="inherit" component={Link} to="/">Shamoji101's ToyBox</Button>
+          <ListItem button component={Link} to="/">
+                <ListItemIcon style={{minWidth: "30px"}}><VideogameAssetIcon style={{color:"white"}}/></ListItemIcon>
+                <ListItemText primary="React toybox" />
+          </ListItem>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -145,6 +161,15 @@ export default function MiniDrawer() {
             <Routes />
         </div>
       </main>
+      <footer className={classes.footer}>
+        <Grid container justifyContent="center" alignItems="center" style={{height: "100px"}}>
+            <Grid item xs></Grid>
+            <Grid item xs={8} style={{textAlign: "center"}}>
+                <Typography variant="body1">shamoji's toybox 2021</Typography>
+            </Grid>
+            <Grid item xs></Grid>
+        </Grid>
+      </footer>
     </div>
   );
 }
