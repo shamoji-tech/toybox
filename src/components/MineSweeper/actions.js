@@ -12,7 +12,7 @@ export const CLOSE_MODAL = "@@MineSweeper/CloseModal";
 export const FLAG = "@@MineSweeper/Flag";
 export const SET_FLAG = "@@MineSweeper/Flag/SetFlag";
 export const REMOVE_FLAG = "@@MineSweeper/Flag/RemoveFlag";
-
+export const TIME_STOP_CLOSER = "@@MineSweeper/TimeStopCloser";
 
 export const cellFlag = (cell, status) => ({
     type: FLAG,
@@ -36,6 +36,10 @@ export const pushReset = () => ({
 
 export const stepOnTheMine = () => ({
     type: GAMEOVER,
+});
+
+export const timeStopCloser = () => ({
+    type: TIME_STOP_CLOSER,
 });
 
 export const closeModal = () => ({

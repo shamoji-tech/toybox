@@ -2,7 +2,7 @@ import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, D
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import TimerDisplay from '../TimerDisplay/TimerDisplay';
-import { pushStart, pushReset, changeDiffNoob, changeDiffNormal, changeDiffAdvanced, cellOpen, cellFlag, stepOnTheMine, closeModal } from './actions';
+import { pushStart, pushReset, changeDiffNoob, changeDiffNormal, changeDiffAdvanced, cellOpen, cellFlag, stepOnTheMine, closeModal, timeStopCloser } from './actions';
 import { unixTime2String } from '../Utils/utils';
 import useLongPress from '../Utils/LongPress';
 import FlagIcon from '@material-ui/icons/Flag';
@@ -151,6 +151,11 @@ class MineSweeper extends Component {
         }
     };
 
+    timerStopper = () => {
+        this.timerRef.current.timerStopper();
+        
+    }
+
     timerReseter = ()=>{
         this.timerRef.current.timerReseter();
         this.setState((prevState)=>{
@@ -166,8 +171,14 @@ class MineSweeper extends Component {
         this.timerRef = React.createRef();
         this.timerStarter = this.timerStarter.bind(this);
         this.timerReseter = this.timerReseter.bind(this);
+        this.timerStopper = this.timerStopper.bind(this);
     }
-
+    componentDidUpdate(){
+        if(this.props.isTimeStop){
+            this.timerStopper();
+            this.props.timeStopCloser();
+        }
+    }
     render(){
         const { 
             mine, 
@@ -278,6 +289,7 @@ export default connect(
         board: state.mine.board,
         isDisplay: state.mine.isDisplay,
         isGameOver: state.mine.isGameOver,
+        isTimeStop: state.mine.isTimeStop,
         isGameOverModalOpen: state.mine.isGameOverModalOpen,
     }),
     (dispatch) => {
@@ -292,6 +304,7 @@ export default connect(
                 cellFlag: (cell, status) => dispatch(cellFlag(cell, status)),
                 stepOnTheMine: ()=> dispatch(stepOnTheMine()),
                 closeModal: ()=> dispatch(closeModal()),
+                timeStopCloser: () => dispatch(timeStopCloser()),
             }
         );
     }

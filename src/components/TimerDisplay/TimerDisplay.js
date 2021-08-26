@@ -33,8 +33,19 @@ class TimerDisplay extends Component{
         });
     }
 
-    timerReseter = () => {
+    timerStopper = () => {
         clearInterval(this.state.intervalID);
+        this.setState((prevState)=>{
+            return {
+                ...prevState,
+                intervalID: 0,
+            }
+        })
+    };
+    timerReseter = () => {
+        if(this.state.intervalID){
+            clearInterval(this.state.intervalID);
+        }
         this.setState((prevState)=>{
             return {
                 ...prevState,
@@ -42,7 +53,7 @@ class TimerDisplay extends Component{
                 nowTime: 0,
             };
         });
-    }
+    };
 
     render(){
 

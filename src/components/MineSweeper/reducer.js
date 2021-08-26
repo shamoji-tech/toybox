@@ -9,6 +9,7 @@ const initMineSweeperState = {
     isDisplay: false,
     isGameOver: false,
     isGameOverModalOpen: false,
+    isTimeStop: false,
 };
 
 const mineSweeperReducer = (state=initMineSweeperState, action) => {
@@ -19,6 +20,7 @@ const mineSweeperReducer = (state=initMineSweeperState, action) => {
                 ...state,
                 isGameOver: true,
                 isGameOverModalOpen: true,
+                isTimeStop: true,
             };
         case actionTypes.CLOSE_MODAL:
             return {
@@ -62,6 +64,11 @@ const mineSweeperReducer = (state=initMineSweeperState, action) => {
                 isDisplay: false,
                 isGameOver: false,
             };
+        case actionTypes.TIME_STOP_CLOSER:
+            return {
+                ...state,
+                isTimeStop: false,
+            }
         default:
             return state;
     }
