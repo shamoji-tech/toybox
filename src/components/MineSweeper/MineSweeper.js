@@ -192,9 +192,6 @@ class MineSweeper extends Component {
             isGameOverModalOpen,
             isWin,
             isWinModalOpen,
-            goalCount,
-            goal,
-            pushChangeDiffDebug,
             pushChangeDiffNoob,
             pushChangeDiffNormal,
             pushChangeDiffAdvanced, 
@@ -225,11 +222,6 @@ class MineSweeper extends Component {
                             name={"select-diff"} 
                             text={"難易度を選択"}
                             menuList={[
-                                {
-                                    name: "DEBUG",
-                                    detail: "2x2",
-                                    func: pushChangeDiffDebug,
-                                },
                                 {
                                     name: "初心者",
                                     detail: "9x9",
@@ -263,9 +255,6 @@ class MineSweeper extends Component {
                     </Grid>
                     <Grid item>
                         <TimerDisplay ref={this.timerRef} isDisplay={isDisplay} startTime={this.state.startTime} displayFunction={unixTime2String} displayDefault="00:00:00:000."/>
-                    </Grid>
-                    <Grid item>
-                        <Typography variant="body1" >goal:{goal}, goalCount: {goalCount}</Typography>
                     </Grid>
                 </Grid>
                 <Divider />

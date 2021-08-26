@@ -46,6 +46,9 @@ const mineSweeperReducer = (state=initMineSweeperState, action) => {
             const y = action.cell.y;
             const board = state.board
             board.cells[y][x].isCellOpen = true;
+            if(board.cells[y][x].isMine){
+                return mineSweeperReducer(state, actionTypes.stepOnTheMine());
+            }
             if(state.goalCount+1 === state.goal){
                 
                 return {
