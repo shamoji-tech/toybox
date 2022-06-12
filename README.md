@@ -1,4 +1,3 @@
 # toybox
 
-toybox.shamoji101.io
-
+https://toybox.shamoji101.io
